@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="css/bootstrap.css" rel="stylesheet" />
+</head>
+<style>
+    .small-image {
+      width: 450px;
+      height: 450px;
+    }
+  </style>
+<body>
+    <h1>DETALLE</h1>
+    <button><a href="HomeSeries.html">Volver A HOME</a></button>
+    <div id="detalle" class="justify-content-center align-items-center">
+        <img class="small-image" id="imagen"/>
+        <h1 id="nombre"></h1>
+        <h2 id="puntuacion"></h2>
+        <div id="boton"> 
+                <button><a >Personajes</a></button>     
+            <script src="js/jquery-3.7.1.min.js"></script>
+
+    <script src="js/bootstrap.bundle.js"></script>
+
+    <script>
+         var urlExamen = "https://apiseriespersonajes.azurewebsites.net/";
+        $(document).ready(function () {
+       loadDetalleSerie()
+        })
+
+        function loadDetalleSerie(){
+            var id = new URLSearchParams(window.location.search).get('idserie')
+            console.log(id)
+
+            var request = "api/Series/"+id;
+            $.get(urlExamen+request, function(data){
+                $("#imagen").attr("src" ,data.imagen)
+                $("#nombre").html(data.nombre)
+                $("#puntuacion").html("IMDB: " + data.puntuacion)
+
+                var ruta = "Personajes.html?idserie=" +id;
+                $("#boton button:first-child a").attr("href", ruta);
+            })  
+
+        }
+    </script>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevo Personaje</title>
+    <link href="css/bootstrap.css" rel="stylesheet" />
+
+</head>
+<style>
+    form{
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+ }
+ select{
+     margin-bottom: 10px;
+ }
+</style>
+<body>
+   
+    <div class="d-fle justify-content-center align-content-center align-items-center">
+        <button><a href="HomeSeries.html">Volver A HOME</a></button>
+        <br>
+        <form>
+            <label>Insertar idserie</label>
+    <br />
+    <input type="text" class="form-control" id="cajaidserie" />
+    <label>Insertar nombre</label>
+    <br />
+    <input type="text" class="form-control" id="cajanombre" />
+    <label>Insertar imagen</label>
+    <br />
+    <input type="text" class="form-control" id="cajaimagen" />
+    <label>serie</label>
+    <br />
+    <select id="series" class="form-control">
+        
+    </select>
+        </form>
+    
+    </div>
+    
+
+    <button id="botoninsert">Insertar Personaje</button>
+
+    <script src="js/jquery-3.7.1.min.js"></script>
+
+    <script src="js/bootstrap.bundle.js"></script>
+    
+    <script>
+         var urlExamen = "https://apiseriespersonajes.azurewebsites.net/";
+        $(document).ready(function () {
+       loadSeries()
+
+       var request = "api/personajes";
+       $("#botoninsert").click(function () {
+        var idSerie = parseInt($("#cajaidserie").val())
+        var nombre = $("#cajanombre").val();
+        var imagen = $("#cajaimagen").val();
+        var idPersonaje = parseInt($("#series").val())
+        console.log(idSerie,idPersonaje,nombre)
+
+        var personaje = new Object();
+        personaje.idPersonaje= idPersonaje;
+        personaje.nombre = nombre;
+        personaje.imagen=imagen;
+        personaje.idSerie= idSerie
+
+        var dataJson = JSON.stringify(personaje);
+        console.log(dataJson)
+        $.ajax({
+            url: urlExamen+ request,
+            type: "POST",
+            contentType: "application/json",
+            data: dataJson,
+            success : function(){
+                        console.log("Insertar correcto")
+                        
+                    }
+        })
+       })
+      });
+
+      function loadSeries() {
+  var request = "api/series";
+  $.getJSON(urlExamen + request, function(data) {
+    console.log(data);
+  
+    $.each(data, function(index, serie) { 
+        
+        var option = $("<option>", { "text": serie.nombre ,  "value": serie.idSerie})  
+                    $("#series").append(option);  
+
+    }); 
+  });
+
+  
+}
+    </script>
+</body>
+</html>

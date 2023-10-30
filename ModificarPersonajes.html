@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar</title>
+    <link href="css/bootstrap.css" rel="stylesheet" />
+</head>
+<style>
+        
+    form{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    select{
+        margin-bottom: 10px;
+    }
+</style>
+
+<body>
+    
+    <h1 style="color: blue;">Modifciar personajes y series</h1>
+    <button><a href="HomeSeries.html">Volver A HOME</a></button>
+    <form>
+        <label>Selecciona una serie</label>
+        <select id="series"></select>
+        <label >Selecciona un personaje</label>
+        <select  id="personajes"></select>
+        <button id="botonupdate" type="button">Modificar</button>
+    </form>
+    
+    <script src="js/jquery-3.7.1.min.js"></script>
+
+    <script src="js/bootstrap.bundle.js"></script>
+    <script>
+        var urlExamen = "https://apiseriespersonajes.azurewebsites.net/";
+        $(document).ready(function () {
+            loadSeries()
+            loadPersonajes()
+
+            $("#botonupdate").click(function(){
+                var idPersonaje = parseInt($("#series").val())
+                var idSerie = parseInt($("#personajes").val())
+                console.log(idPersonaje,idSerie)
+
+                var personaje = new Object();
+                personaje.idPersonaje = idPersonaje;
+                personaje.idSerie = idSerie;
+                var dataJson = JSON.stringify(personaje)
+
+                var request = "/api/Personajes/"+idPersonaje+"/"+idSerie;
+                console.log(request)
+                $.ajax({
+                    url: urlExamen+request,
+                    type: "PUT",
+                    contentType: "application/json",
+                    data:dataJson,
+                    success: function(){
+                        console.log ("Modificando correctamente")
+                       
+                    }
+                })
+            })
+        })
+
+        function loadSeries() {
+  var request = "api/series";
+  $.getJSON(urlExamen + request, function(data) {
+    console.log(data);
+  
+    $.each(data, function(index, serie) { 
+        
+        var option = $("<option>", { "text": serie.nombre ,  "value": serie.idSerie})  
+                    $("#series").append(option);  
+
+    }); 
+  });
+
+}
+
+    function loadPersonajes(){
+        var request = "api/personajes";
+        $.getJSON(urlExamen + request, function(data) {
+    console.log(data);
+  
+    $.each(data, function(index, personaje) { 
+        
+        var option = $("<option>", { "text": personaje.nombre ,  "value": personaje.idPersonaje})  
+                    $("#personajes").append(option);  
+
+    }); 
+  });
+    }
+    </script>
+</body>
+</html>
