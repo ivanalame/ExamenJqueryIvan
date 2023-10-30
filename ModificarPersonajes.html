@@ -40,8 +40,8 @@
             loadPersonajes()
 
             $("#botonupdate").click(function(){
-                var idPersonaje = parseInt($("#series").val())
-                var idSerie = parseInt($("#personajes").val())
+                var idPersonaje = parseInt($("#personajes").val())
+                var idSerie = parseInt($("#series").val())
                 console.log(idPersonaje,idSerie)
 
                 var personaje = new Object();
@@ -58,7 +58,6 @@
                     data:dataJson,
                     success: function(){
                         console.log ("Modificando correctamente")
-                       
                     }
                 })
             })
